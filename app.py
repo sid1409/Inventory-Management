@@ -1,8 +1,12 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+from validators import *
+
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////test.db'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -39,12 +43,30 @@ def hello_world():
 def showSignUpPage():
     return render_template('signup.html')
 
-@app.route('/signUp')
+@app.route('/signUp', methods = ['POST'])
 def signUp():
     retailer_id = request.form['id']
+    retailer_email = request.form['email']
     retailer_pass = request.form['password']
+    retailer_repass = request.form['repassword']
+    session = dict()
+
+    session['nameError'] = nameValidator(retailer_id)
+    session['emailError'] = emailValidator(retailer_email)
+    session['passError'] = passValidator(retailer_pass)
+    session['rePassError'] = (retailer_repass == retailer_pass)
+
+    if not (session['passError'] and session['emailError'] and session['nameError'] and session['rePassError']):
+        return render_template('signup.html', session = session)
+
     retailer = Retailer()
-    #TODO: check ID and Password from database
+    retailer.name = retailer_id
+    retailer.email = retailer_email
+    retailer.password = generate_password_hash(retailer_pass, "sha256")
+
+    db.session.add(retailer)
+    db.session.commit()
+
 
 
 
