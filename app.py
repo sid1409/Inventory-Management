@@ -1,5 +1,5 @@
 #Imports
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from requests import session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -204,12 +204,25 @@ def addPro():
 
 @app.route('/showAltPri')
 def showAltPri():
-    return render_template('altPri.html')
+    listOfPro = []
+    session = dict()
+    with db.engine.connect() as conn:
+        curr = conn.execute("SELECT name, price, expDate FROM 'product';")
+        listOfPro = curr.fetchall()
+    session['listOfPro'] = listOfPro
+    return render_template('altPri.html', session = session)
 
-@app.route('/altPri')
+@app.route('/altPri', methods=['POST'])
 def alrPri():
-    #TODO
-    return render_template('addPro.html')
+    with db.engine.connect() as conn:
+        curr = conn.execute("UPDATE 'product' SET price = '{}' WHERE name = '{}';".format(request.form['price'],request.form['proName']))
+    listOfPro = []
+    session = dict()
+    with db.engine.connect() as conn:
+        curr = conn.execute("SELECT name, price, expDate FROM 'product';")
+        listOfPro = curr.fetchall()
+    session['listOfPro'] = listOfPro
+    return render_template('altPri.html', session = session) 
 
 @app.route('/showGenRep')
 def showGenRep():

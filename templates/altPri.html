@@ -13,10 +13,35 @@
 <body>
     <h1>Alter Price page</h1>
 
-    <form action="/addDis">
-        
+    <form action="/altPri" method="post">
+        <label for="proName">Choose Product:</label>
+        <select name="proName" id="proName" required>
+            {% if 'listOfPro' in session %}
+                {% for item in session['listOfPro'] %}
+                    <option value="{{item['name']}}">{{item['name']}}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
+        <input type="number" name="price" min="1" id="price" placeholder="Update Price" required>
+        <button type="submit">Change Price</button>
     </form>
 
+    <table style="background: rgba(128, 128, 128, 0.386);">
+        <tr>
+            <th style="padding: 10px;">Product Name</th>
+            <th style="padding: 10px;">Price</th>
+            <th style="padding: 10px;">Exp Date</th>
+        <tr>
+            {% if 'listOfPro' in session %}
+            {% for item in session['listOfPro'] %}
+                <td style="padding: 10px;">{{item['name']}}</td>
+                <td style="padding: 10px;"> {{item['price']}}</td>
+                <td style="padding: 10px;">{{item['expDate']}}</td>
+            {% endfor %}
+            {% endif %}
+        </tr>
+        </tr>
+    </table>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
