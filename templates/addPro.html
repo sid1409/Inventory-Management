@@ -13,12 +13,16 @@
 <body>
     <h1>Add product page</h1>
 
-    <form action="/addPro">
+    <form action="/addPro" method="post">
         <label for="inv_type">Choose Inventory type:</label>
         <select name="inv_type" id="inv_type" required>
-            <option value="volvo">Volvo</option>
+            {% if 'listOfInv' in session %}
+                {% for item in session['listOfInv'] %}
+                    <option value="{{item}}">{{item}}</option>
+                {% endfor %}
+            {% endif %}
         </select><br>
-        <input type="text" placeholder="Product name" required><br>
+        <input type="text" name="proName" placeholder="Product name" required><br>
         <input type="number" min="1" name="noOfProducts" id="noOfProducts" placeholder="#Stocks" required><br>
 
         <label for="manuDate">Manufacturing date:</label>
@@ -28,6 +32,7 @@
         <input type="date" name="expDate" id="expDate" placeholder=""><br>
 
         <input type="number" name="price" min="0.01" id="price" placeholder="Price of Item" required>
+        <button type="submit">Add Product</button>
     </form>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

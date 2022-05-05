@@ -1,6 +1,7 @@
 #Imports
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from requests import session
 from werkzeug.security import generate_password_hash, check_password_hash
 from validators import *
 
@@ -34,8 +35,8 @@ class Retailer(db.Model):
         nullable=False
     )
 
-class Stock(db.Model):
-    __tablename__ = 'stock'
+class Product(db.Model):
+    __tablename__ = 'product'
     id = db.Column(
         db.Integer,
         primary_key=True
@@ -48,8 +49,21 @@ class Stock(db.Model):
         db.String(100),
         nullable=False,
     )
-    expiry_date = db.Column(
-
+    no_of_pro = db.Column(
+        db.Integer,
+        nullable = False
+    )
+    manuDate = db.Column(
+        db.Integer,
+        nullable = True
+    )
+    expDate = db.Column(
+        db.Integer,
+        nullable = True
+    )
+    price = db.Column(
+        db.Float,
+        nullable = False
     )
 
 class Inventory(db.Model):
@@ -94,8 +108,10 @@ def signUp():
     retailer.email = retailer_email
     retailer.password = generate_password_hash(retailer_pass, "sha256")
 
+
     db.session.add(retailer)
     db.session.commit()
+    return render_template('login.html')
 
 @app.route('/loginShow')
 def showLoginPage():
@@ -123,22 +139,67 @@ def login():
 
 @app.route('/showAddInv')
 def showAddInv():
-    return render_template('addInv.html')
+    listOfInv = []
+    temp = []
+    session = dict()
+    with db.engine.connect() as conn:
+        curr = conn.execute("SELECT name FROM 'inventory';")
+        temp = curr.fetchall()
+    if temp != None:
+        for all in temp:
+            listOfInv.append(all[0])
+    session['listOfInv'] = listOfInv
+
+    return render_template('addInv.html', session = session)
 
 
 @app.route('/addInv', methods = ['POST'])
 def addInv():
     session = dict()
-    print(request.form['inv_type'])
-    return render_template('header.html', session = session)
+    inv = Inventory()
+    inv.name = str(request.form['inv_type']).lower()
+
+    db.session.add(inv)
+    db.session.commit()
+
+    listOfInv = []
+    temp = []
+    with db.engine.connect() as conn:
+        curr = conn.execute("SELECT name FROM 'inventory';")
+        temp = curr.fetchall()
+    if temp != None:
+        for all in temp:
+            listOfInv.append(all[0])
+    session['listOfInv'] = listOfInv
+
+    return render_template('addInv.html', session = session)
 
 @app.route('/showAddPro')
 def showAddPro():
-    return render_template('addPro.html')
+    listOfInv = []
+    temp = []
+    session = dict()
+    with db.engine.connect() as conn:
+        curr = conn.execute("SELECT name FROM 'inventory';")
+        temp = curr.fetchall()
+    if temp != None:
+        for all in temp:
+            listOfInv.append(all[0])
+    session['listOfInv'] = listOfInv
+    return render_template('addPro.html', session = session)
 
-@app.route('/addPro')
+@app.route('/addPro', methods=['POST'])
 def addPro():
-    #TODO
+    pro = Product()
+    pro.inv_type = request.form['inv_type']
+    pro.name = str(request.form['proName']).lower()
+    pro.no_of_pro = int(request.form['noOfProducts'])
+    pro.manuDate = request.form['manuDate']
+    pro.expDate = request.form['expDate']
+    pro.price = float(request.form['price'])
+
+    db.session.add(pro)
+    db.session.commit()
     return render_template('addPro.html')
 
 @app.route('/showAltPri')

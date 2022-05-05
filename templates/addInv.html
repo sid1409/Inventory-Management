@@ -13,10 +13,17 @@
 <body>
     <form action="/addInv" method="post">
         <input type="text" name="inv_type" id="inv_type" placeholder="Enter new Inventoy Name">
-        <button type="submit">Save</button>
+        <button type="submit">Save</button>    
+        
     </form>
-    <a href="/login"><button>Cancle</button></a>
 
+    <ul>
+    {% if 'listOfInv' in session%}
+        {% for item in session['listOfInv'] %}
+            <li>{{item}}</li>
+        {% endfor %}
+    {% endif%}
+    </ul>  
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
