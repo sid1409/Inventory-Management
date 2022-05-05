@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from requests import session
 from werkzeug.security import generate_password_hash, check_password_hash
 from validators import *
 
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.sqlite3' #TODO Change DB on release
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -74,11 +75,22 @@ def signUp():
 def showLoginPage():
     return render_template('login.html')
 
-@app.route('/login')
+@app.route('/login', methods=['POST'])
 def login():
     retailer_id = request.form['id']
     retailer_pass = request.form['password']
-    #TODO: check ID and Password from database
-
+    
+    res = None
+    session = dict()
+    session['userFound'] = True
+    with db.engine.connect() as conn:
+        curr = conn.execute("SELECT password FROM 'retailer-info' WHERE name = '{}';".format(retailer_id))
+        res = curr.fetchone()
+    
+    if res == None or not check_password_hash(res[0], retailer_pass):
+        session['userFound'] = False
+        return render_template('login.html', session = session)
+    return render_template('login.html', session = session)
+    
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True) #TODO remove debug on release

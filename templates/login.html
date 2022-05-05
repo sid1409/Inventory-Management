@@ -16,6 +16,12 @@
         <button type="submit">Submit</button>
     </form>
 
+    {% if 'userFound' in session and session['userFound'] == False %}
+        <div>User Not Found</div>
+    {% endif %}
+    {% if 'userFound' in session and session['userFound'] == True %}
+        <div>User Found</div>
+    {% endif %}
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
