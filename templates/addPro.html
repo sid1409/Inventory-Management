@@ -11,17 +11,24 @@
 </head>
 
 <body>
-    <div class="container text-center">
-        <h1>Sign-up</h1><br>
-        <form action="/signUp" method="post">
-            <input type="text" name="email" placeholder="email id" required><br>
-            <input type="text" name="id" placeholder="retailer id" required><br>
-            <input type="password" name="password" placeholder="password" required><br>
-            <input type="password" name="repassword" placeholder="retype password" required><br>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+    <h1>Add product page</h1>
 
+    <form action="/addPro">
+        <label for="inv_type">Choose Inventory type:</label>
+        <select name="inv_type" id="inv_type" required>
+            <option value="volvo">Volvo</option>
+        </select><br>
+        <input type="text" placeholder="Product name" required><br>
+        <input type="number" min="1" name="noOfProducts" id="noOfProducts" placeholder="#Stocks" required><br>
+
+        <label for="manuDate">Manufacturing date:</label>
+        <input type="date" name="manuDate" id="manuDate" placeholder=""><br>
+
+        <label for="expDate">Expiry date:</label>
+        <input type="date" name="expDate" id="expDate" placeholder=""><br>
+
+        <input type="number" name="price" min="0.01" id="price" placeholder="Price of Item" required>
+    </form>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

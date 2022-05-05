@@ -11,17 +11,11 @@
 </head>
 
 <body>
-    <div class="container text-center">
-        <h1>Sign-up</h1><br>
-        <form action="/signUp" method="post">
-            <input type="text" name="email" placeholder="email id" required><br>
-            <input type="text" name="id" placeholder="retailer id" required><br>
-            <input type="password" name="password" placeholder="password" required><br>
-            <input type="password" name="repassword" placeholder="retype password" required><br>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-
+    <form action="/addInv" method="post">
+        <input type="text" name="inv_type" id="inv_type" placeholder="Enter new Inventoy Name">
+        <button type="submit">Save</button>
+    </form>
+    <a href="/login"><button>Cancle</button></a>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
