@@ -65,6 +65,10 @@ class Product(db.Model):
         db.Float,
         nullable = False
     )
+    threshold = db.Column(
+        db.Integer,
+        nullable = True
+    )
 
 class Inventory(db.Model):
     __tablename__ = 'inventory'
@@ -235,11 +239,25 @@ def genReport():
 
 @app.route('/showSetAlert')
 def showSetAlert():
-    return render_template('setAlert.html')
-@app.route('/setAlert')
+    listOfPro = []
+    session = dict()
+    with db.engine.connect() as conn:
+        curr = conn.execute("SELECT name, no_of_pro, expDate FROM 'product';")
+        listOfPro = curr.fetchall()
+    session['listOfPro'] = listOfPro
+    return render_template('setAlert.html', session = session)
+@app.route('/setAlert', methods = ['POST'])
 def setAlert():
-    #TODO
-    return render_template('setAlert.html')
+    threshold = request.form['threshold']
+    with db.engine.connect() as conn:
+        curr = conn.execute("UPDATE 'product' SET threshold = '{}' WHERE name = '{}';".format(threshold,str(request.form['proName'].lower())))
+    listOfPro = []
+    session = dict()
+    with db.engine.connect() as conn:
+        curr = conn.execute("SELECT name, no_of_pro,threshold, expDate FROM 'product';")
+        listOfPro = curr.fetchall()
+    session['listOfPro'] = listOfPro
+    return render_template('setAlert.html', session = session)
 
 if __name__ == "__main__":
-    app.run(debug=True) #TODO remove debug on release
+    app.run() #TODO remove debug on release
