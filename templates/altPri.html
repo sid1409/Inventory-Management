@@ -8,40 +8,57 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/main.css">
 </head>
 
-<body>
-    <h1>Alter Price page</h1>
-
-    <form action="/altPri" method="post">
-        <label for="proName">Choose Product:</label>
-        <select name="proName" id="proName" required>
-            {% if 'listOfPro' in session %}
-                {% for item in session['listOfPro'] %}
+<body id="bdy">
+    <div id="header" class="navbar">
+        <div class="navbar-brand">
+            <a href="/home">
+                <img style=" height: 120px;" src="../static/icons/royal-logo.png" alt="">
+            </a>
+        </div>
+        <ul class="navbar">
+            <li class="nav">
+                <h1 style="color: black;">Alter price of product</h1>
+            </li>
+        </ul>
+        <a href="/home">
+            <div><img style=" height: 25px;" src="../static/icons/back-ico.png" alt=""><br>Back</div>
+        </a>
+    </div>
+    <div class="container" style="margin: 20px;">
+        <form action="/altPri" method="post">
+            <div class="form-group" style="display: inline;">
+                <label for="proName">Choose Product:</label>
+                <select name="proName" id="proName" required>
+                    {% for item in listOfPro %}
                     <option value="{{item['name']}}">{{item['name']}}</option>
-                {% endfor %}
-            {% endif %}
-        </select>
-        <input type="number" name="price" min="1" id="price" placeholder="Update Price" required>
-        <button type="submit">Change Price</button>
-    </form>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group" style="display: inline;">
+                <input type="number" name="price" min="1" id="price" placeholder="Updated Price" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="display: inline;">Change Price</button>
+        </form>
 
-    <table style="background: rgba(128, 128, 128, 0.386);">
-        <tr>
-            <th style="padding: 10px;">Product Name</th>
-            <th style="padding: 10px;">Price</th>
-            <th style="padding: 10px;">Exp Date</th>
-        <tr>
-            {% if 'listOfPro' in session %}
-            {% for item in session['listOfPro'] %}
+        <table style="background: rgba(128, 128, 128, 0.386); border-radius: 2px; border-style: solid; border-width: 2px; border-color: black; ">
+            <tr style="border: 2px; border-style: solid; border-width: 0.5px; border-color: black;">
+                <th style="padding: 10px;">Product Name</th>
+                <th style="padding: 10px;">Price</th>
+                <th style="padding: 10px;">Exp Date</th>
+            </tr>
+            {% for item in listOfPro %}
+            <tr style="border: 2px; border-style: solid; border-width: 0.5px; border-color: black;">
                 <td style="padding: 10px;">{{item['name']}}</td>
                 <td style="padding: 10px;"> {{item['price']}}</td>
                 <td style="padding: 10px;">{{item['expDate']}}</td>
+            </tr>
             {% endfor %}
-            {% endif %}
-        </tr>
-        </tr>
-    </table>
+            
+        </table>
+    </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

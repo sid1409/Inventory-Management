@@ -8,33 +8,57 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/main.css">
 </head>
 
-<body>
-    <h1>Add product page</h1>
-
-    <form action="/addPro" method="post">
-        <label for="inv_type">Choose Inventory type:</label>
-        <select name="inv_type" id="inv_type" required>
-            {% if 'listOfInv' in session %}
-                {% for item in session['listOfInv'] %}
+<body id="bdy">
+    <div id="header" class="navbar">
+        <div class="navbar-brand">
+            <a href="/home">
+                <img style=" height: 120px;" src="../static/icons/royal-logo.png" alt="">
+            </a>
+        </div>
+        <ul class="navbar">
+            <li class="nav">
+                <h1 style="color: black;">Add new product</h1>
+            </li>
+        </ul>
+        <a href="/home">
+            <div><img style=" height: 25px;" src="../static/icons/back-ico.png" alt=""><br>Back</div>
+        </a>
+    </div>
+    <div class="container" style="margin: 20px;">
+        <form action="/addPro" method="post" class="form">
+            <div class="form-group">
+                <label for="inv_type">Choose Inventory type:</label>
+                <select name="inv_type" id="inv_type" required>
+                    {% if 'listOfInv' in session %}
+                    {% for item in session['listOfInv'] %}
                     <option value="{{item}}">{{item}}</option>
-                {% endfor %}
-            {% endif %}
-        </select><br>
-        <input type="text" name="proName" placeholder="Product name" required><br>
-        <input type="number" min="1" name="noOfProducts" id="noOfProducts" placeholder="#Stocks" required><br>
-
-        <label for="manuDate">Manufacturing date:</label>
-        <input type="date" name="manuDate" id="manuDate" placeholder=""><br>
-
-        <label for="expDate">Expiry date:</label>
-        <input type="date" name="expDate" id="expDate" placeholder=""><br>
-
-        <input type="number" name="price" min="0.01" id="price" placeholder="Price of Item" required>
-        <button type="submit">Add Product</button>
-    </form>
-
+                    {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" name="proName" placeholder="Product name" required>
+            </div>
+            <div class="form-group">
+                <input type="number" min="1" name="noOfProducts" id="noOfProducts" placeholder="#Stocks" required><br>
+            </div>
+            <div class="form-group">
+                <label for="manuDate">Manufacturing date:</label>
+                <input type="date" name="manuDate" id="manuDate" placeholder=""><br>
+            </div>
+            <div class="form-group">
+                <label for="expDate">Expiry date:</label>
+                <input type="date" name="expDate" id="expDate" placeholder=""><br>
+            </div>
+            <div class="form-group">
+                <input type="number" name="price" min="0.01" id="price" placeholder="Price of Item" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
+    </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
