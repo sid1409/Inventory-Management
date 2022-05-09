@@ -55,6 +55,7 @@ class Inventory(db.Model):
 # Routes
 @app.route("/")
 def hello_world():
+    session.clear()
     return render_template("index.html")
 
 
@@ -213,8 +214,7 @@ def alrPri():
     with db.engine.connect() as conn:
         curr = conn.execute("SELECT name, price, expDate FROM 'product';")
         listOfPro = curr.fetchall()
-    session["listOfPro"] = listOfPro
-    return render_template("altPri.html", session=session)
+    return render_template("altPri.html", session=session, listOfPro=listOfPro)
 
 
 @app.route("/showGenRep")

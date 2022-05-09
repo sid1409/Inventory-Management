@@ -13,7 +13,7 @@
 
 <body id="bdy">
     <center>
-        <img style=" height: 200px;" src="../static/icons/royal-logo.png" alt="">
+        <a href="/"><img style=" height: 200px;" src="../static/icons/royal-logo.png" alt=""></a>
     </center>
     <br>
     
@@ -21,7 +21,7 @@
         <h5>Sign-up</h5>
         <form action="/signUp" method="post"  class="form">
             
-            <div class="form-group">
+            <div class="form-group" onclick="hide()">
                 <input type="text" name="id" placeholder="retailer id" required data-toggle="tooltip"
                     data-placement="right" title="Minimum 4 characters. First letter must be alphabet.">
             </div>
@@ -41,20 +41,21 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+        <div>Existing user? <a href="/loginShow">Log In</a></div>
         {% if 'nameError' in session %}
-            <p class="text-danger">ID is not in format.</p>
+            <p id="warn" class="text-danger">ID is not in format.</p>
         {%endif%}
 
         {% if emailError in session %}
-            <p class="text-danger">Email ID is not valid.</p>
+            <p id="warn" class="text-danger">Email ID is not valid.</p>
         {%endif%}
 
         {% if 'passError' in session %}
-            <p class="text-danger">Password not in valid format.</p>
+            <p id="warn" class="text-danger">Password not in valid format.</p>
         {%endif%}
 
         {% if 'repassError' in session %}
-            <p class="text-danger">Password does not match.</p>
+            <p id="warn" class="text-danger">Password does not match.</p>
         {%endif%}
     </div>
 
@@ -70,6 +71,10 @@
         crossorigin="anonymous"></script>
 </body>
 <script>
+    function hide(){
+        var x = document.getElementById("warn");
+        x.hidden = true;
+    }
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
